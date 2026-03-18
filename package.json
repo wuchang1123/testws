@@ -1,0 +1,13 @@
+{
+  "name": "vless-mux-node",
+  "version": "1.0.0",
+  "description": "Minimal Node.js VLESS MUX Server/Client",
+  "main": "client/app.js",
+  "scripts": {
+    "start-server": "node server/vless-ws-mux-server.js",
+    "start-client": "node client/app.js"
+  },
+  "dependencies": {
+    "ws": "^8.15.0"
+  }
+}
