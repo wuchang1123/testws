@@ -69,7 +69,7 @@ wss.on('connection',(ws,req)=>{
 
         // TCP
         if(!conn.streams.has(sid)){
-          const sock = net.connect(80,'example.com'); // demo
+          const sock = net.connect(80,'example.com'); // demo,可改host
           sock.on('data',d=>{
             const buf = Buffer.concat([
               Buffer.from([sid>>8,sid&0xff]),
