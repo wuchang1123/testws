@@ -1,0 +1,46 @@
+搭建dns服务，包含服务端和客户端
+- 服务端、客户端
+  - 使用nodejs
+  - 多路复用（MUX）
+  - ECS支持
+  - 高性能、高并发
+  - 超时控制
+  - 失败快速重试
+  - Hedged 请求、Top100 热点上报 + 预热
+  - 密码/密钥存储系统变量中
+- 服务端
+  - 使用cloudflare平台
+  - DNS缓存：TTL、Cache API（生产级）
+  - 多上游（Cloudflare / Google Public DNS / Quad9）
+  - 高性能（减少 DoH 请求）
+  - 非法请求直接丢弃
+  - 用户行为记录
+    - IP、User-Agent、访问次数、最后访问时间
+    - 去重写入
+    - 通过API查询
+    - 使用cloudflare鉴权配置
+  - 先检查缓存，优先使用缓存
+  - 限流（防滥用）
+- 服务端、客户端之间的通讯
+  - DNS缓存：LRU + TTL
+  - 伪装成网页流量，简单https请求，附带校验，防止他人滥用
+  - UA 伪装（浏览器）
+    - 随机生成的“可信站点域名”，让请求看起来更像真实浏览器行为。
+    - Referer + Origin 一致性
+    - UA + Referer + TLS 指纹一致性
+  - 客户端启动代理服务，上游服务是使用上面提及的cloudeflare的https协议
+  - 连接复用（Keep-Alive + HTTP/2）
+  - 自适应批处理
+  - 上游服务器无响应时直接从缓存中返回响应
+  - [多个DNS请求] -> 合并 -> 单请求
+
+搭建按ip自动、手动测速服务
+- 基于next.js技术栈
+- ip列表
+  - 后台录入，如：192.168.0.0/16
+  - ip导航：按掩码一级一级聚合切换展示；
+  - 按速度排列
+- ip详情
+  - 所有测速的记录
+- 测速
+  - 使用 https://github.com/XIU2/CloudflareSpeedTest 对ip测速
